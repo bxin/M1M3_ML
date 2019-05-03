@@ -1,0 +1,10 @@
+.DS_Store
+.ipynb_checkpoints/
+190111.ipynb
+ChrisScripts/
+M1M3_EFD_Diagnostics.ipynb
+Show_EFD.ipynb
+__pycache__/
+db.py
+efdData/
+

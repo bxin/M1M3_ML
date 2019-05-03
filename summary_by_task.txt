@@ -1,0 +1,89 @@
+Optimize number of samples and time interval for each measurement
+---
+* 190115 camp1 day2, it was decided that M1 would use 50x2s, and M3 20x2s.
+
+Repeatibility tests
+---
+* 190116 camp1 day3, add bending mode 1 (3N), remove, remeasure M1
+* 190116 camp1 day3, add bending mode 22 (20/40/60N), remove, remeasure M1
+* 190116 camp1 day3, translate mirror dx/dy/dz=1mm, and back, remeasure M1
+* 190116 camp1 day3, lower then raise, remeasure M1
+* 190221 camp2 day 9, remove then reinstall 4 actuators, measure M1M3
+
+Bending modes
+---
+* 190116 camp1 day3, Mirror Lab modes: M1, 1-4
+* 190117 camp1 day4, Mirror Lab modes: M1, 5-24, M3, 1-24
+* 190211 camp2 day1, Mirror Lab modes: M1 & M3, 25,26,27, then for repeatibility: 2,4,20,22
+* 190213 camp2 day3, LSST modes: M1 & M3, 1-16, 19, 23
+* 190218 camp2 day6, LSST modes: M1 & M3, 17, 18, 20, 21, 22, 24-27
+* 190219 camp2 day7, LSST modes: M1, 17, 18,20 (previous day had letter 'F', but data had been fixed/replaced)
+
+  	 Mirror Lab mode shapes & residuals:
+	 	190117 (1-24)
+		190211 (25-27, +repeat 4)
+	LSST mode shapes & residuals:
+	     190213 (1-16, 19, 23)
+	     190218 (17,18,20-22, 24-27)
+	     
+Single actuator influence functions:
+---
+* 190118 camp1 day5, M3, 1-30, M1, 1-15
+* 190122 camp1 day6, M1, 16-30. Now 1-30 are all done.
+* 190214 camp2 day4, M1 & M3, 31-40, then for repeatibility: 1, 2, 29
+* 190218 camp2 day6, M1 & M3, 41-50
+
+  	 IF 1-30 & residuals: 190118
+	 IF 31-40 & residuals (+repeat 3): 190214
+	 IF 41-50 & residuals: 190218
+	 
+Surface optimization
+---
+* 190111 camp1 day0, preliminary look, M1-M3-M1,  holes were observed on top of the quads. 
+
+* 190114 camp1 day1, 2x M1-M3-M1 measurements to start with, with additional quad forces.
+* 190114 camp1 day1, 5 iterations, M1 only
+* 190114 camp1 day1, check M1-M3-M1 again. M3 didn't look good.
+* 190114 camp1 day1, removed quad forces, measure M1-M3-M1, then restart optimization
+* 190114 camp1 day1, measure M1-M3-M1 again, still not good.
+
+* 190116 camp1 day3, Bo had calcuated new forces to account for hardware removal and installation. 5 iterations.
+
+* 190122 camp1 day6, started doing M1M3 global optimization, 5 iterations, 24 modes. no quad forces. ~50/50nm.
+
+* 190124 camp1 day8, M1M3 global optimization, with quad forces, 2 iterations, 24 modes.
+* 190124 camp1 day8, bump up quad forces, 1 iteration.
+* 190124 camp1 day8, use 27 modes, 3 iterations, M1~40nm, M3~30nm
+
+* 190125 camp1 day9, 2 rounds = 13 iterations. See if make improvements. 33/32nm.
+
+* 190211 camp2 day1, use forces from 190125, see if we can get back the surfaces. 1 iteration.
+
+* 190212 camp2 day2, use Bo's initial forces which accounts for lateral actuator weights. 5 iterations, no quad forces. new mirror position.
+* 190212 camp2 day2, add quad forces, 5 iterations. ~40/40nm. Also removed 153 modes analytically to check high frequency error.
+
+* 190214 camp2 day4, start using LSST bending modes for optimization. 29.9/29.9nm. No quad forces.
+
+* 190215 camp2 day5, see if we can repeat previous day's results. yes, approximately. Also removed 153 modes analytically to check.
+* 190215 camp2 day5, new mirror position, old initial forces, check sensitivity to mirror position.
+
+* 190220 camp2 day8, final push, Bo adjusted 4 quads + 8 neighbors, (but then realized the input map was misinterpretted: +y/-y swap)
+
+* 190221 camp2 day9, final push, Bo adjusted 4 quads + 8 neighbors + 2 inner edge. Final surface: 27/24nm.
+* 190221 camp2 day9, at the end of the day, confirmed that we could get back the best surface.
+
+Horizon tests
+---
+* 190213 camp2 day3, 2 rounds of +--+ measurements, with 1/4 horizon forces.
+* 190220 camp2 day8, tried to optimize M1M3 using M3 measurements, with 7/16 LSST/ML bending modes. Failed.
+* 190221 camp2 day9, optimized M1M3 using M3 measurements, using Bo's approach. 174/30nm
+
+
+
+
+
+
+
+27 modes?
+scaling factor?
+LUT?
