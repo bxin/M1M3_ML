@@ -1,13 +1,15 @@
 # M1M3_ML
 LSST M1M3 optical analyses for tests at UofA Mirror Lab
 
+Caution (5/5/2019): a problem was uncovered with the current determination of the cross-talk matrix for the LSST bending modes. This is in the process of being fixed. The cross talk here refers to the small but non-zero coefficients we get for bending mode#j, when we fit the measured bending mode #i using all 27 FEA bending modes.
+
 The repo contains the analyses performed with data we took at the UofA Mirror Lab. These are mostly documented with Jupyter notebooks, which uses Python 3 and other standard Python libraries.
 
 To execute these notebooks require data from two sources.
 * a data package (~50GB) that was delivered to LSST by the Mirror Lab 
 * a EFD database (~20T) that contains all the telemetry data published by the mirror control software. At this time, there is no plan to make these publicly available. The notebooks are therefore saved with all the plots and outputs.
 
-The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found as LSST document-xxxxx.
+The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found [here](ftp://ftp.noao.edu/pub/bxin/forGMT/UA-LSST-01053%20M1M3%20Testing%20in%20Telescope%20Cell--Test%20Plan%20Execution%20rev%20A.pdf).
 
 A summary of what tests have been performed for each of the major tasks can be found in summary_by_task.txt in the repo.
 
@@ -45,17 +47,17 @@ data/sec4.3Forces.csv | Initial force set used during campaign 2 (correctly acco
 
 Other related Documents:
 ---
-* data analysis plan presented at readiness review
-* data processing precedure description
-* M1M3 performance analysis at mirror acceptance
-* FEA bending mode calculation procedure
-* initial force calculation
-* load spreader moments
-* force offset measurements on spare actuators
-* structure function results
-* horizon test force determination
-* horizon test optimization results
-* bending mode 27
+* [Data analysis plan presented at M1M3 Optical Test Readiness Review](https://www.dropbox.com/s/hme029i491t2f70/181207_M1M3_analysis.pdf?dl=0)
+* [Data processing precedure description](https://www.dropbox.com/s/9llk14b2dy0xlbo/m1m3dataProcessing.pdf?dl=0)
+* [M1M3 performance analysis at mirror acceptance (2015)](https://www.dropbox.com/s/6b3u4eyfneplncf/M1M3_crows_feet_v13.pdf?dl=0)
+* [FEA bending mode calculation procedure](https://www.dropbox.com/s/0913v4b8tgzzluy/Document-15312.docx?dl=0)
+* [Initial force calculation for Mirror Lab Testing](https://www.dropbox.com/s/65py2lzfhvnuu5i/initialForces.pdf?dl=0)
+* [FEA investigation of divits above the quads](https://www.dropbox.com/s/rzqg4ornuptbhza/quadDivits_study.pptx?dl=0)
+* [Force offset measurements on spare actuators](https://www.dropbox.com/s/4cymxrvu5ed1elq/load%20cell%20offsets.xlsx?dl=0)
+* [Structure function results](https://www.dropbox.com/s/1uljgoehyn8luwf/M1M3_SF_email.pdf?dl=0)
+* [Horizon test force determination](https://www.dropbox.com/s/c14cmmo5s61ttaz/LSST_FEA_Horizon.key.pdf?dl=0)
+* [Horizon test optimization results](https://www.dropbox.com/s/40q16feylxu8ntm/190304_M3_optimization.key.pdf?dl=0)
+* [Do we need bending mode 27 for AOS closed-loop?](https://www.dropbox.com/s/og0vijt7ia5lljx/190410_M1M3_BM27.key.pdf?dl=0)
 
 To-do List:
 ---
