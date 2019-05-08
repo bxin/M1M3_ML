@@ -7,7 +7,7 @@ To execute these notebooks require data from two sources.
 * a data package (~50GB) that was delivered to LSST by the Mirror Lab 
 * a EFD database (~20T) that contains all the telemetry data published by the mirror control software. At this time, there is no plan to make these publicly available. The notebooks are therefore saved with all the plots and outputs.
 
-The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found [here](ftp://ftp.noao.edu/pub/bxin/forGMT/UA-LSST-01053%20M1M3%20Testing%20in%20Telescope%20Cell--Test%20Plan%20Execution%20rev%20A.pdf).
+The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found [here](https://www.dropbox.com/s/9yva5pzjtcjo9we/UA-LSST-01053%20M1M3%20Testing%20in%20Telescope%20Cell--Test%20Plan%20Execution%20rev%20A.pdf?dl=0).
 
 A summary of what tests have been performed for each of the major tasks can be found in summary_by_task.txt in the repo.
 
