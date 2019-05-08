@@ -1,8 +1,6 @@
 # M1M3_ML
 LSST M1M3 optical analyses for tests at UofA Mirror Lab
 
-Caution (5/5/2019): a problem was uncovered with the current determination of the cross-talk matrix for the LSST bending modes. This is in the process of being fixed. The cross talk here refers to the small but non-zero coefficients we get for bending mode#j, when we fit the measured bending mode #i using all 27 FEA bending modes.
-
 The repo contains the analyses performed with data we took at the UofA Mirror Lab. These are mostly documented with Jupyter notebooks, which uses Python 3 and other standard Python libraries.
 
 To execute these notebooks require data from two sources.
@@ -58,11 +56,4 @@ Other related Documents:
 * [Horizon test force determination](https://www.dropbox.com/s/c14cmmo5s61ttaz/LSST_FEA_Horizon.key.pdf?dl=0)
 * [Horizon test optimization results](https://www.dropbox.com/s/40q16feylxu8ntm/190304_M3_optimization.key.pdf?dl=0)
 * [Do we need bending mode 27 for AOS closed-loop?](https://www.dropbox.com/s/og0vijt7ia5lljx/190410_M1M3_BM27.key.pdf?dl=0)
-
-To-do List:
----
-* re-fit LSST bending modes. update cross-talk matrix. update finalBendingModes.ipynb.
-* Repeat all Mirror Lab fits.
-* check T: EFD against Mirror Lab log
-* The surface RMS values in the data are not consistent with what they quoted during testing. Are we looking at the right data files?
 
