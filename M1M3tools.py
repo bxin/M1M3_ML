@@ -24,6 +24,7 @@ m1IRC = 2.558
 
 home = os.path.expanduser("~")
 dataDir  = os.path.join(home, 'largeData', 'M1M3_ML')
+BMPatchDir = os.path.join(dataDir, 'LSST_BM_patch_190508')
 
 fat = np.array(FATABLE)
 actID = np.int16(fat[:, FATABLE_ID])
