@@ -118,7 +118,8 @@ def create_connection2():
 engine1 = create_engine('mysql+mysqldb://', creator=create_connection1)
 engine2 = create_engine('mysql+mysqldb://', creator=create_connection2)
 
-def get_dataframe_EFD(month, day, hour, minute, table_name = 'm1m3_logevent_AppliedForces'):
+def get_dataframe_EFD(myt, table_name = 'm1m3_logevent_AppliedForces'):
+    [month, day, hour, minute] = myt
     b0 = datetime(2019, month, day, hour, minute, 0)
     b1 = b0 + timedelta(minutes = -2)
     b2 = b0 + timedelta(minutes = 2)
@@ -137,14 +138,14 @@ def get_dataframe_EFD(month, day, hour, minute, table_name = 'm1m3_logevent_Appl
         df1 = pd.read_csv(filename,parse_dates=['date_time']) #make sure dtype for date_time column is understood
     return df1
 
-def get_F_EFD(month, day, hour, minute, table_name = 'm1m3_logevent_AppliedForces'):
-    df1 = get_dataframe_EFD(month, day, hour, minute, table_name)
-    F = assembleFfromEFD(df1, campn = month)
+def get_F_EFD(myt, table_name = 'm1m3_logevent_AppliedForces'):
+    df1 = get_dataframe_EFD(myt, table_name)
+    F = assembleFfromEFD(df1, campn = myt[0])
     return F
 
-def get_F_EFD_C1C2(month, day, hour, minute, table_name='m1m3_logevent_AppliedCylinderForces'):
-    df1 = get_dataframe_EFD(month, day, hour, minute, table_name)
-    F = assembleFfromEFD_C1C2(df1, campn = month)
+def get_F_EFD_C1C2(myt, table_name='m1m3_logevent_AppliedCylinderForces'):
+    df1 = get_dataframe_EFD(myt, table_name)
+    F = assembleFfromEFD_C1C2(df1, campn = myt[0])
     return F
 
 def assembleFfromEFD(df1, campn = 1, output=0):
@@ -171,13 +172,14 @@ def assembleFfromEFD(df1, campn = 1, output=0):
                 myF[i, 3] = np.mean(df1['ZForces_%d'%(i+1)]) #Fz
             except KeyError:
                 myF[i, 3] = np.mean(df1['ZForce_%d'%(i+1)]) #Fz
-        else:
+        elif campn == 2:
             if len(df1.ZForces)>0 and len(df1.ZForces[0].split())==156:
                 myF[i, 3] = np.mean([float(df1.ZForces[ii].split()[i]) 
                        for ii in range(len(df1.ZForces))])
             else:
                 zexist = 0
         if ix != -1:
+            # x forces in campn 2 were NOT changed into strings. Only y and z forces
             try:
                 myF[i, 1] = np.mean(df1['XForces_%d'%(ix+1)]) #Fx, note ix starts with 0
             except KeyError:
@@ -194,11 +196,11 @@ def assembleFfromEFD(df1, campn = 1, output=0):
                         myF[i, 2] = np.mean(df1['YForce_%d'%(iy+1)]) #Fx, note ix starts with 0
                     except KeyError:
                         yexist = 0
-            else:
-                if len(df1.YForces)>0:
+            elif campn == 2:
+                try:
                     myF[i, 2] = np.mean([float(df1.YForces[ii].split()[iy]) 
                        for ii in range(len(df1.YForces))])
-                else:
+                except AttributeError:
                     zexist = 0
         if output:
             print('%d, %6.1f %6.1f %8.1f'%(myF[i, 0],myF[i, 1],myF[i, 2],myF[i, 3]))
