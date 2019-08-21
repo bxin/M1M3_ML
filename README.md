@@ -1,15 +1,13 @@
 # M1M3_ML
 LSST M1M3 optical analyses for tests at UofA Mirror Lab
 
-Caution (5/5/2019): a problem was uncovered with the current determination of the cross-talk matrix for the LSST bending modes. This is in the process of being fixed. The cross talk here refers to the small but non-zero coefficients we get for bending mode#j, when we fit the measured bending mode #i using all 27 FEA bending modes.
-
 The repo contains the analyses performed with data we took at the UofA Mirror Lab. These are mostly documented with Jupyter notebooks, which uses Python 3 and other standard Python libraries.
 
 To execute these notebooks require data from two sources.
 * a data package (~50GB) that was delivered to LSST by the Mirror Lab 
 * a EFD database (~20T) that contains all the telemetry data published by the mirror control software. At this time, there is no plan to make these publicly available. The notebooks are therefore saved with all the plots and outputs.
 
-The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found [here](ftp://ftp.noao.edu/pub/bxin/forGMT/UA-LSST-01053%20M1M3%20Testing%20in%20Telescope%20Cell--Test%20Plan%20Execution%20rev%20A.pdf).
+The test plan, with follow-up information on when and how each section was executed during the test campaigns, are found [here](https://www.dropbox.com/s/9yva5pzjtcjo9we/UA-LSST-01053%20M1M3%20Testing%20in%20Telescope%20Cell--Test%20Plan%20Execution%20rev%20A.pdf?dl=0).
 
 A summary of what tests have been performed for each of the major tasks can be found in summary_by_task.txt in the repo.
 
@@ -58,11 +56,4 @@ Other related Documents:
 * [Horizon test force determination](https://www.dropbox.com/s/c14cmmo5s61ttaz/LSST_FEA_Horizon.key.pdf?dl=0)
 * [Horizon test optimization results](https://www.dropbox.com/s/40q16feylxu8ntm/190304_M3_optimization.key.pdf?dl=0)
 * [Do we need bending mode 27 for AOS closed-loop?](https://www.dropbox.com/s/og0vijt7ia5lljx/190410_M1M3_BM27.key.pdf?dl=0)
-
-To-do List:
----
-* re-fit LSST bending modes. update cross-talk matrix. update finalBendingModes.ipynb.
-* Repeat all Mirror Lab fits.
-* check T: EFD against Mirror Lab log
-* The surface RMS values in the data are not consistent with what they quoted during testing. Are we looking at the right data files?
 
