@@ -18,6 +18,7 @@ Filename | Description
 190114.ipynb, 190115.ipynb, 190116.ipynb, 190117.ipynb, 190118.ipynb, 190122.ipynb, 190124.ipynb, 190125.ipynb, 190211.ipynb, 190212.ipynb, 190213.ipynb, 190214.ipynb, 190215.ipynb, 190218.ipynb, 190219.ipynb, 190220.ipynb, 190221.ipynb | A day-by-day description of what was done, and what results were obtained
 FATABLE.py | Some parameters for the mirror and cell, and basic functions by the control system
 FB_diagnostics.ipynb | A demostration of how the Force Balance system works
+ForceError.ipynb | Analysis on applied forces versus measured forces
 M1M3tools.py | Some common tools used by the notebooks 
 M_HP.ipynb | A demostration of how the Hard Point Matrix is calculated
 checkTfromEFD.ipynb | To check temperature spatial distribution and time variation
@@ -31,15 +32,26 @@ sec3.7bendingModesStress.ipynb | A look at the stress on the glass produced by i
 sec3.8_SingleActuator.ipynb | A notebook used during testing for prioritizing the single actuator influence function measurements
 sec4.3InitialForces.ipynb | Calculation of the initial force set used during campaign 2 (correctly accounted for dual-axis actuator weights)
 summary_by_task.txt | A summary of what tests have been performed for each of the major tasks
+data/FLUT.yaml | final LUT, by elevation angle. Horizon optimized forces are based on FEA
+data/LSST_BM_XTalk.txt | LSST bending modes cross talk matrix
 data/LSST_BM_scale.txt | LSST bending modes scaling factors (need to be multiplied with FEA mode shapes)
+data/LS_CUP_ACTSTYLE_ID.xlsx | Excel file from Ed Hileman, detailing actuator types and orientation etc.
 data/M1M3_1um_156_force.txt | Calibrated force sets that produce 1 micron RMS of LSST bending modes
 data/M1M3_1um_156_grid.txt | LSST bending mode shapes
 data/MHP.txt | LSST M1M3 Hard Points Matrix
 data/ML_BM_XTalk.txt | Mirror Lab bending modes cross-talk
 data/ML_BM_scale.txt | Mirror Lab bending modes scaling factors (need to be multiplied with FEA mode shapes)
 data/ML_IF_scale.txt | Mirror Lab influence function scaling factors (need to be multiplied with FEA influence functions)
-data/finalLUT.csv | Zenith-pointing optimized forces to go onsky with M1M3
+data/MirrorLab2014Forces.xlsx | Forces from mirror polishing in 2014
 data/forces_190125_Chris.csv | Force set that produced the optimized surface on 190125, as from the control system, and provided by Chris
+data/forces_used_real_time_190214.xlsx | forces for f3 surface on 190124. This was the starting point for 190221 surface optimization
+data/fxfyfzDAAs.yaml | x,y,z forces need to support DAA weights, as a function of zenith angle; This is written out by sec4.3InitialForces.ipynb, and read in by finalLUT.ipynb
+data/horizonF.csv | bending forces used for the horizon test. These have zero net moments
+data/horizonFTot.csv | total optimized horizon forces from FEA analysis. These have net x-moment.
+data/horizonMeaS.csv | measured surface during horizon test. This was saved because the fit to FEA was done in Matlab. They need to be displayed in the notebook.
+data/horizonResS.csv | surface residual after fitting measured horizon surface to FEA prediction. This was saved because the fit to FEA was done in Matlab. They need to be displayed in the notebook.
+data/horizonS.csv | FEA predicted surface for horizon test. This was saved because the fit to FEA was done in Matlab. They need to be displayed in the notebook.
+data/myFoffset.txt | per-actuator force offset (repeating force error) from force error analysis
 data/myUdn3norm_156.mat | LSST FEA bending modes and forces. This is a Matlab mat file, but can be read-in using Python.
 data/sec4.3Forces.csv | Initial force set used during campaign 2 (correctly accounted for dual-axis actuator weights)
 

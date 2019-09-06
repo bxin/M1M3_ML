@@ -110,7 +110,7 @@ def mkM1M3disp(m1s, m3s, x1, y1, x3, y3):
 
 def create_connection1():
     default_file = os.path.join(os.path.expanduser('~/'), 'Documents', 'efd.cnf')
-    return mdb.connect(host="140.252.32.246", user="efduser", passwd="lssttest", db="EFD")
+    return mdb.connect(host="140.252.33.53", user="efduser", passwd="lssttest", db="EFD")
 def create_connection2():
     default_file = os.path.join(os.path.expanduser('~/'), 'Documents', 'efd.cnf')
     return mdb.connect(host="140.252.32.142", user="efduser", passwd="lssttest", db="EFD")
@@ -123,8 +123,12 @@ def get_dataframe_EFD(myt, table_name = 'm1m3_logevent_AppliedForces'):
     b0 = datetime(2019, month, day, hour, minute, 0)
     b1 = b0 + timedelta(minutes = -2)
     b2 = b0 + timedelta(minutes = 2)
+    #we do not use private_sndStamp to do query, because it is not sequential in the DB !!! takes forever !!!
+    # see get_Fxyz_from_EFD.ipynb or forceError.ipynb
     query = 'select * from {0} where {0}.date_time between \'{1}\' and \'{2}\';'.format(table_name, b1, b2)
     namestr = table_name.split('_')[-1]
+    if namestr == 'ForceActuatorData':
+        namestr = 'MeasuredForces'    
     filename = 'efdData/%s_%s.csv'%(namestr, (b1+(b2-b1)/2).strftime("%y%m%d_%H%M"))
     if not os.path.isfile(filename):
         print(query)
