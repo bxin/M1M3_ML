@@ -12,3 +12,6 @@ coordinates in meter for that node. The rest of the columns are for
 individual bending modes. Note that these are surface normal
 displacements in meter, which need to be projected to surface sag if
 used in raytrace programs.
+The surface sag bending modes are at
+\url{https://github.com/bxin/M1M3_ML/blob/master/data/M1M3_1um_156_sag.txt}
+This follows the same format as the surface normal modes.
