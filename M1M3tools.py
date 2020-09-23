@@ -81,7 +81,7 @@ def readH5Map(fileset, dataset = '/dataset'):
 
 def getH5date():
     return 1
-    
+
 def mkXYGrid(s, centerRow, centerCol, pixelSize):
     '''
     construct the x and y mesh grid corresponding to the image array in the h5 files.
@@ -109,34 +109,38 @@ def mkM1M3disp(m1s, m3s, x1, y1, x3, y3):
 
 
 def create_connection1():
-    default_file = os.path.join(os.path.expanduser('~/'), 'Documents', 'efd.cnf')
     return mdb.connect(host="140.252.33.53", user="efduser", passwd="lssttest", db="EFD")
 def create_connection2():
-    default_file = os.path.join(os.path.expanduser('~/'), 'Documents', 'efd.cnf')
     return mdb.connect(host="140.252.32.142", user="efduser", passwd="lssttest", db="EFD")
+def create_connection3():
+    return mdb.connect(host="127.0.0.1", user="efduser", passwd="lssttest", db="EFD")
 
 engine1 = create_engine('mysql+mysqldb://', creator=create_connection1)
 engine2 = create_engine('mysql+mysqldb://', creator=create_connection2)
+engine3 = create_engine('mysql+mysqldb://', creator=create_connection3)
 
-def get_dataframe_EFD(myt, table_name = 'm1m3_logevent_AppliedForces'):
+def get_dataframe_EFD(myt, table_name = 'm1m3_logevent_AppliedForces', dtMinutes=4, doQuery=False):
     [month, day, hour, minute] = myt
     b0 = datetime(2019, month, day, hour, minute, 0)
-    b1 = b0 + timedelta(minutes = -2)
-    b2 = b0 + timedelta(minutes = 2)
+    b1 = b0 + timedelta(minutes = -dtMinutes/2)
+    b2 = b0 + timedelta(minutes = dtMinutes/2)
     #we do not use private_sndStamp to do query, because it is not sequential in the DB !!! takes forever !!!
     # see get_Fxyz_from_EFD.ipynb or forceError.ipynb
     query = 'select * from {0} where {0}.date_time between \'{1}\' and \'{2}\';'.format(table_name, b1, b2)
     namestr = table_name.split('_')[-1]
     if namestr == 'ForceActuatorData':
-        namestr = 'MeasuredForces'    
+        namestr = 'MeasuredForces'
     filename = 'efdData/%s_%s.csv'%(namestr, (b1+(b2-b1)/2).strftime("%y%m%d_%H%M"))
-    if not os.path.isfile(filename):
+    if doQuery or not os.path.isfile(filename):
         print(query)
         if month ==1:
             df1 = pd.read_sql_query(query, engine1)
-        else:
+        elif month ==2:
             df1 = pd.read_sql_query(query, engine2)
-        df1.to_csv(filename)
+        else:
+            df1 = pd.read_sql_query(query, engine3)
+        if not doQuery:
+            df1.to_csv(filename)
     else:
         print('-------Reading from %s-------------'%filename)
         df1 = pd.read_csv(filename,parse_dates=['date_time']) #make sure dtype for date_time column is understood
@@ -157,7 +161,7 @@ def assembleFfromEFD(df1, campn = 1, output=0):
     df1 is a pandas frame, which is result of a query to table m1m3_logevent_AppliedForces
     This assumes x/y/z forces from invidual actuators are stored as separate columns
 
-    output:
+    output: AVERAGED forces for all records in df1
     col 0: actuator IDs
     col 1: x force
     col 2: y force
@@ -178,7 +182,7 @@ def assembleFfromEFD(df1, campn = 1, output=0):
                 myF[i, 3] = np.mean(df1['ZForce_%d'%(i+1)]) #Fz
         elif campn == 2:
             if len(df1.ZForces)>0 and len(df1.ZForces[0].split())==156:
-                myF[i, 3] = np.mean([float(df1.ZForces[ii].split()[i]) 
+                myF[i, 3] = np.mean([float(df1.ZForces[ii].split()[i])
                        for ii in range(len(df1.ZForces))])
             else:
                 zexist = 0
@@ -202,7 +206,7 @@ def assembleFfromEFD(df1, campn = 1, output=0):
                         yexist = 0
             elif campn == 2:
                 try:
-                    myF[i, 2] = np.mean([float(df1.YForces[ii].split()[iy]) 
+                    myF[i, 2] = np.mean([float(df1.YForces[ii].split()[iy])
                        for ii in range(len(df1.YForces))])
                 except AttributeError:
                     zexist = 0
@@ -214,7 +218,7 @@ def assembleFfromEFD(df1, campn = 1, output=0):
     if not yexist:
         print('---No YForces---')
     if not zexist:
-        print('---No ZForces---')        
+        print('---No ZForces---')
     return myF
 
 def assembleFfromEFD_C1C2(df1, campn =1, output=0):
@@ -236,7 +240,7 @@ def assembleFfromEFD_C1C2(df1, campn =1, output=0):
         if campn == 1:
             fc1 = np.mean(df1['PrimaryCylinderForces_%d'%(i+1)])/1000.
         else:
-            fc1 = np.mean([float(df1.PrimaryCylinderForces[ii].split()[i]) 
+            fc1 = np.mean([float(df1.PrimaryCylinderForces[ii].split()[i])
                        for ii in range(len(df1.PrimaryCylinderForces))])/1000
         myF[i, 3] = fc1
         if orientation == 'NA':
@@ -245,7 +249,7 @@ def assembleFfromEFD_C1C2(df1, campn =1, output=0):
             if campn == 1:
                 fc2 = np.mean(df1['SecondaryCylinderForces_%d'%(idaa+1)])/1000.
             else:
-                fc2 = np.mean([float(df1.SecondaryCylinderForces[ii].split()[idaa]) 
+                fc2 = np.mean([float(df1.SecondaryCylinderForces[ii].split()[idaa])
                        for ii in range(len(df1.SecondaryCylinderForces))])/1000
             myF[i, 3] += fc2*0.707 #Fz
             if orientation == '+X':
@@ -262,7 +266,72 @@ def assembleFfromEFD_C1C2(df1, campn =1, output=0):
             print('%d, %6.1f %6.1f %8.1f'%(myF[i, 0],myF[i, 1],myF[i, 2],myF[i, 3]))
     return myF
 
+def assembleFinst(df1, campn, output=0):
+    '''
+    This function extracts force data from the pandas dataframe (df1),
+    assign the force values to a multi-dimensional array (myF).
+    There is no time average of the forces. We store all the instantaneous forces.
+    '''
+    nn = len(df1.private_sndStamp)
+    myF = np.zeros((nn, nActuator, 4))
+    myF[:,:,0] = actID
+    xexist = 1
+    yexist = 1
+    zexist = 1
+    for i in range(nActuator):
+        ix = FATABLE[i][FATABLE_XINDEX]
+        iy = FATABLE[i][FATABLE_YINDEX]
+        if campn == 1:
+            try:
+                myF[:, i, 3] = df1['ZForces_%d'%(i+1)] #Fz
+            except KeyError:
+                myF[:, i, 3] = df1['ZForce_%d'%(i+1)] #Fz
+        else:
+            try:
+                myF[:, i, 3] = [float(df1.ZForce[ii].split()[i])
+                       for ii in range(len(df1.ZForce))]
+            except AttributeError:
+                try:
+                    myF[:, i, 3] = [float(df1.ZForces[ii].split()[i])
+                           for ii in range(len(df1.ZForces))]
+                except AttributeError:
+                    zexist = 0
+        if ix != -1:
+            # x forces in campn 2 were NOT changed into strings. Only y and z forces
+            try:
+                myF[:, i, 1] = df1['XForces_%d'%(ix+1)] #Fx, note ix starts with 0
+            except KeyError:
+                try:
+                    myF[:, i, 1] = df1['XForce_%d'%(ix+1)] #Fx, note ix starts with 0
+                except KeyError:
+                    xexist = 0
+        if iy != -1:
+            if campn == 1:
+                try:
+                    myF[:, i, 2] = df1['YForces_%d'%(iy+1)] #Fx, note ix starts with 0
+                except KeyError:
+                    try:
+                        myF[:, i, 2] = df1['YForce_%d'%(iy+1)] #Fx, note ix starts with 0
+                    except KeyError:
+                        yexist = 0
+            else:
+                try:
+                    myF[:, i, 2] = [float(df1.YForce[ii].split()[iy])
+                       for ii in range(len(df1.YForce))]
+                except AttributeError:
+                    try:
+                        myF[:, i, 2] = [float(df1.YForces[ii].split()[iy])
+                           for ii in range(len(df1.YForces))]
+                    except AttributeError:
+                        yexist = 0
 
+    if not xexist:
+        print('---No XForces---')
+    if not yexist:
+        print('---No YForces---')
+    if not zexist:
+        print('---No ZForces---')
+    return myF
 
 
 dft = pd.read_csv('%s/Telescope_Cell_Data/Temperatures/lsst_tc_190114.txt'%(dataDir), comment='%',nrows=87)
@@ -318,14 +387,14 @@ def plotEFDT(m):
     ax[0][0].axis('equal')
     plt.colorbar(img, ax=ax[0][0])
     ax[0][0].set_title('Face plate')
-    
+
     #back plate
     idx2 = m[:,0]==2
     img = ax[0][1].scatter(m[idx2,1], m[idx2,2], 1e3*(m[idx2,3]-min(m[idx2,3])), (m[idx2,3]))
     ax[0][1].axis('equal')
     plt.colorbar(img, ax=ax[0][1])
     ax[0][1].set_title('Back plate')
-    
+
     #average
     x = m[idx1,1]
     y = m[idx1,2]
@@ -336,7 +405,7 @@ def plotEFDT(m):
     ax[1][0].axis('equal')
     plt.colorbar(img, ax=ax[1][0])
     ax[1][0].set_title('Average')
-    
+
     #Diff
     diff = (t1-t2)
     img = ax[1][1].scatter(x,y,1e3*abs(diff), diff)
